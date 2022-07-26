@@ -1,0 +1,14 @@
+﻿{
+  "UsuarioXPath": "/html/body/div[1]/form/div[1]/div/input",
+  "SenhaXPath": "/html/body/div[1]/form/div[2]/div[1]/input ",
+  "LoginXPath": "/html/body/div[1]/form/input",
+  "MenuXPath": "/html/body/div[1]/div[1]/div[2]/div/ul",
+  "CentroDeCustoXPath": "//*[@id=\"status\"]",
+  "AtividadeXPath": "//*[@id=\"descricao\"]",
+  "InicioHoraXPath": "//*[@id=\"hr_inicio\"]",
+  "InicioMinutoXPath": "//*[@id=\"mi_inicio\"]",
+  "FinalHoraXPath": "//*[@id=\"hr_fim\"]",
+  "FinalMinutoXPath": "//*[@id=\"mi_fim\"]",
+  "CalendarioDiaId": "DiaComum",
+  "GravarDadosXPath": "/html/body/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/form/fieldset/div/div/div/div[2]/div[6]/input"
+}
