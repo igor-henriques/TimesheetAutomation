@@ -21,6 +21,7 @@ internal class DriverUtils
             "--disable-blink-features=AutomationControlled",
             "--disable-dev-shm-usage",
             "--no-sandbox",
+            "--headless",
             "--disable-impl-side-painting",
             "--disable-setuid-sandbox",
             "--disable-seccomp-filter-sandbox",

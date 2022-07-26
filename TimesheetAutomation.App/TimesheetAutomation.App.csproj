@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Remove="Configurations\Definitions.json" />
     <None Remove="Configurations\ElementsLocators.json" />
+    <None Remove="log.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +18,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Configurations\ElementsLocators.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="log.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

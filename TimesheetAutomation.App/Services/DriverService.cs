@@ -1,6 +1,6 @@
 ﻿namespace TimesheetAutomation.App.Services;
 
-internal class DriverService : IDriverService
+internal class DriverService : IDriverService, IDisposable
 {
     private readonly ChromeDriver _driver;
     private readonly WebDriverWait _wait;
@@ -15,11 +15,6 @@ internal class DriverService : IDriverService
     public void Navigate(string URL)
     {
         _driver.Navigate().GoToUrl(URL);
-    }
-
-    public void Refresh()
-    {
-        _driver.Navigate().Refresh();
     }
 
     public IWebElement GetElement(By elementLocator, bool verifyExistence = true)
@@ -53,21 +48,6 @@ internal class DriverService : IDriverService
 
         element.SendKeys(text);
     }
-    public string GetCurrentURL()
-    {
-        return _driver.Url;
-    }
-
-    public bool ElementExists(By elementLocator)
-    {
-        try
-        {
-            return _driver.FindElement(elementLocator) != null;
-        }
-        catch (Exception) { }
-
-        return false;
-    }
 
     public void WaitUntilElementExists(By elementLocator)
     {
@@ -82,5 +62,10 @@ internal class DriverService : IDriverService
             }
             catch { return false; }
         });
+    }
+
+    public void Dispose()
+    {
+        this._driver.Dispose();
     }
 }

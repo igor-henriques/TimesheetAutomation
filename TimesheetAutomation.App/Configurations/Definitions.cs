@@ -26,8 +26,14 @@ internal record Definitions
     {
         var definitions = JsonConvert.DeserializeObject<Definitions>(await File.ReadAllTextAsync("./Configurations/Definitions.json"));
 
+        if (string.IsNullOrEmpty(definitions.Usuario) | string.IsNullOrEmpty(definitions.Senha))
+        {
+            LogWriter.Write("Usuario e/ou senha vazios no arquivo Definitions.json");
+            Environment.Exit(0);
+        }
+
         definitions.Locators = JsonConvert.DeserializeObject<ElementsLocators>(await File.ReadAllTextAsync("./Configurations/ElementsLocators.json"));
-        definitions.MainURL = string.Format(definitions.MainURL, DateTime.Now.Year, DateTime.Now.Month, 20);
+        definitions.MainURL = string.Format(definitions.MainURL, DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
         return definitions;
     }

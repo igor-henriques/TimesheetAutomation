@@ -4,9 +4,21 @@ var definitions = await Definitions.CreateAsync();
 
 IDriverService _driverService = new DriverService();
 
-await LoginAsync();
+try
+{
+    await LoginAsync();
+    await MarkTimesheet();
 
-await MarkTimesheet();
+    VerifyTimesheet();
+
+    _driverService.Dispose();
+}
+catch (Exception ex)
+{
+    LogWriter.Write(ex.ToString());
+
+    throw;
+}
 
 async Task LoginAsync()
 {
@@ -32,7 +44,15 @@ async Task MarkTimesheet()
     await _driverService.ClickOnElement(By.XPath(definitions.Locators.GravarDadosXPath));
 }
 
-async Task VerifyTimesheet()
+void VerifyTimesheet()
 {
+    if (string.IsNullOrEmpty(_driverService.GetElementContent(By.XPath(definitions.Locators.RegistroTabelaXPath))))
+    {
+        LogWriter.Write($"Houve um erro ao marcar ponto no dia {DateTime.Today.ToShortDateString()}.");
+        return;
+    }
 
+    LogWriter.Write($"Ponto do dia {DateTime.Today.ToShortDateString()} marcado com sucesso.\n" +
+        $"Hora Início:{definitions.HorarioInicio.Hora.ToString("00")}:{definitions.HorarioInicio.Minuto.ToString("00")}\n" +
+        $"Hora Final:{definitions.HorarioFinal.Hora.ToString("00")}:{definitions.HorarioFinal.Minuto.ToString("00")}");
 }

@@ -14,4 +14,5 @@ internal sealed record ElementsLocators
     public string FinalMinutoXPath { get; init; }
     public string CalendarioDiaId { get; init; }
     public string GravarDadosXPath { get; init; }
+    public string RegistroTabelaXPath { get; init; }
 }

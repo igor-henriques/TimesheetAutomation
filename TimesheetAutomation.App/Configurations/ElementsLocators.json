@@ -10,5 +10,6 @@
   "FinalHoraXPath": "//*[@id=\"hr_fim\"]",
   "FinalMinutoXPath": "//*[@id=\"mi_fim\"]",
   "CalendarioDiaId": "DiaComum",
-  "GravarDadosXPath": "/html/body/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/form/fieldset/div/div/div/div[2]/div[6]/input"
+  "GravarDadosXPath": "/html/body/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/form/fieldset/div/div/div/div[2]/div[6]/input",
+  "RegistroTabelaXPath": "/html/body/div[1]/div[2]/div[2]/div/div/div[3]/div/table/tbody/tr[1]/td[1]"
 }
