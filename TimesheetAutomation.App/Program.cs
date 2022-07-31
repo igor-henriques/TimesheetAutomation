@@ -3,13 +3,12 @@
 var definitions = await Definitions.CreateAsync();
 
 IDriverService _driverService = new DriverService();
+IWorkdayService workdayService = new WorkdayService();
 
 try
 {
     await LoginAsync();
     await MarkTimesheet();
-
-    VerifyTimesheet();
 
     _driverService.Dispose();
 }
@@ -29,30 +28,71 @@ async Task LoginAsync()
     await _driverService.ClickOnElement(By.XPath(definitions.Locators.LoginXPath));
 
     _driverService.WaitUntilElementExists(By.XPath(definitions.Locators.MenuXPath));
-
-    _driverService.Navigate(definitions.MainURL);
 }
 
 async Task MarkTimesheet()
 {
-    _driverService.InsertTextOnElement(By.XPath(definitions.Locators.CentroDeCustoXPath), definitions.CentroDeCusto);
-    _driverService.InsertTextOnElement(By.XPath(definitions.Locators.AtividadeXPath), definitions.Atividade);
-    _driverService.InsertTextOnElement(By.XPath(definitions.Locators.InicioHoraXPath), definitions.HorarioInicio.Hora.ToString("00"));
-    _driverService.InsertTextOnElement(By.XPath(definitions.Locators.InicioMinutoXPath), definitions.HorarioInicio.Minuto.ToString("00"));
-    _driverService.InsertTextOnElement(By.XPath(definitions.Locators.FinalHoraXPath), definitions.HorarioFinal.Hora.ToString("00"));
-    _driverService.InsertTextOnElement(By.XPath(definitions.Locators.FinalMinutoXPath), definitions.HorarioFinal.Minuto.ToString("00"));
-    await _driverService.ClickOnElement(By.XPath(definitions.Locators.GravarDadosXPath));
+    for (int day = 1; day < DateTime.UtcNow.Day; day++)
+    {
+        if (!await IsWorkDay(day))
+            continue;
+
+        string baseUrl = string.Format(definitions.MainURL, DateTime.Now.Year, DateTime.Now.Month, day);
+
+        _driverService.Navigate(baseUrl);
+
+        foreach (var horario in definitions.Horarios)
+        {
+            _driverService.InsertTextOnElement(By.XPath(definitions.Locators.CentroDeCustoXPath), definitions.CentroDeCusto);
+            _driverService.InsertTextOnElement(By.XPath(definitions.Locators.AtividadeXPath), definitions.Atividade);
+            _driverService.InsertTextOnElement(By.XPath(definitions.Locators.InicioHoraXPath), horario.HoraInicio.ToString("00"));
+            _driverService.InsertTextOnElement(By.XPath(definitions.Locators.InicioMinutoXPath), horario.MinutoInicio.ToString("00"));
+            _driverService.InsertTextOnElement(By.XPath(definitions.Locators.FinalHoraXPath), horario.HoraFinal.ToString("00"));
+            _driverService.InsertTextOnElement(By.XPath(definitions.Locators.FinalMinutoXPath), horario.MinutoFinal.ToString("00"));
+            await _driverService.ClickOnElement(By.XPath(definitions.Locators.GravarDadosXPath));
+
+            VerifyTimesheet(horario);
+        }
+    }
 }
 
-void VerifyTimesheet()
+void VerifyTimesheet(Horario horario)
 {
     if (string.IsNullOrEmpty(_driverService.GetElementContent(By.XPath(definitions.Locators.RegistroTabelaXPath))))
     {
         LogWriter.Write($"Houve um erro ao marcar ponto no dia {DateTime.Today.ToShortDateString()}.");
         return;
-    }
+    }                                                                                                                                                                                                                                                                                                                            
 
     LogWriter.Write($"Ponto do dia {DateTime.Today.ToShortDateString()} marcado com sucesso.\n" +
-        $"Hora Início:{definitions.HorarioInicio.Hora.ToString("00")}:{definitions.HorarioInicio.Minuto.ToString("00")}\n" +
-        $"Hora Final:{definitions.HorarioFinal.Hora.ToString("00")}:{definitions.HorarioFinal.Minuto.ToString("00")}");
+        $"Hora Início:{horario.HoraInicio.ToString("00")}:{horario.MinutoInicio.ToString("00")}\n" +
+        $"Hora Final:{horario.HoraFinal.ToString("00")}:{horario.MinutoFinal.ToString("00")}");
+}
+
+async ValueTask<bool> IsWorkDay(int day)
+{
+    var currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, day);
+
+    bool isWeekend = currentDate.DayOfWeek == DayOfWeek.Sunday | currentDate.DayOfWeek == DayOfWeek.Saturday;
+
+    if (isWeekend)
+        return false;
+
+    if (definitions.SafelistHolidayDates.Any(d => d.Day.Equals(currentDate.Day)     &
+                                                  d.Month.Equals(currentDate.Month) &
+                                                  d.Year.Equals(currentDate.Year)))
+    {
+        return false;
+    }
+
+    var holidays = await workdayService.GetHolidays();
+
+    if (holidays.Any(d => d.Day.Equals(currentDate.Day) &
+                     d.Month.Equals(currentDate.Month) &
+                     d.Year.Equals(currentDate.Year)))
+    {
+        return false;
+    }
+
+    return true;
 }

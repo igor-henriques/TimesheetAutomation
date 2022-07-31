@@ -2,7 +2,7 @@
   "UsuarioXPath": "/html/body/div[1]/form/div[1]/div/input",
   "SenhaXPath": "/html/body/div[1]/form/div[2]/div[1]/input ",
   "LoginXPath": "/html/body/div[1]/form/input",
-  "MenuXPath": "/html/body/div[1]/div[1]/div[2]/div/ul",
+  "MenuXPath": "/html/body/div[1]/div[1]/div[2]/div/ul/li[3]/a/span",
   "CentroDeCustoXPath": "//*[@id=\"status\"]",
   "AtividadeXPath": "//*[@id=\"descricao\"]",
   "InicioHoraXPath": "//*[@id=\"hr_inicio\"]",

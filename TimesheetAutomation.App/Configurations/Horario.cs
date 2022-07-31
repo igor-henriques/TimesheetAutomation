@@ -2,6 +2,8 @@
 
 internal sealed record Horario
 {
-    public int Hora { get; init; }
-    public int Minuto { get; init; }
+    public int HoraInicio { get; init; }
+    public int MinutoInicio { get; init; }
+    public int HoraFinal { get; init; }
+    public int MinutoFinal { get; init; }
 }

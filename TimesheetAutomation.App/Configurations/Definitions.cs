@@ -9,17 +9,18 @@ internal record Definitions
     public string Senha { get; init; }
 
     [JsonProperty("MainURL")]
-    public string MainURL { get; private set; }
+    public string MainURL { get; set; }
     
     [JsonProperty("Centro de Custo")]
     public string CentroDeCusto { get; init; }
     [JsonProperty("Atividade")]
     public string Atividade { get; init; }
-    [JsonProperty("HorarioInicio")]
-    public Horario HorarioInicio { get; init; }
-    [JsonProperty("HorarioFinal")]
-    public Horario HorarioFinal { get; init; }
+    [JsonProperty("Horários")]
+    public IEnumerable<Horario> Horarios { get; init; }
     public ElementsLocators Locators { get; private set; }
+    [JsonProperty("Safelist")]
+    private IEnumerable<string> SafelistDates { get; init; } = Enumerable.Empty<string>();
+    public IEnumerable<DateOnly> SafelistHolidayDates { get; private set; } = Enumerable.Empty<DateOnly>();
     private Definitions() { }
 
     public static async Task<Definitions> CreateAsync()
@@ -33,7 +34,9 @@ internal record Definitions
         }
 
         definitions.Locators = JsonConvert.DeserializeObject<ElementsLocators>(await File.ReadAllTextAsync("./Configurations/ElementsLocators.json"));
-        definitions.MainURL = string.Format(definitions.MainURL, DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+        if (definitions.SafelistDates.Any())
+            definitions.SafelistHolidayDates = definitions.SafelistDates.Select(d => DateOnly.Parse(d));
 
         return definitions;
     }
