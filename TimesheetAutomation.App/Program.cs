@@ -1,6 +1,6 @@
 ﻿DriverUtils.CleanDriverGarbage();
 
-var definitions = await Definitions.CreateAsync();
+var definitions = await Definitions.GetInstanceAsync();
 
 IDriverService _driverService = new DriverService();
 IWorkdayService workdayService = new WorkdayService();
@@ -41,6 +41,9 @@ async Task MarkTimesheet()
 
         _driverService.Navigate(baseUrl);
 
+        if (IsDayAlreadyChecked())
+            continue;
+
         foreach (var horario in definitions.Horarios)
         {
             _driverService.InsertTextOnElement(By.XPath(definitions.Locators.CentroDeCustoXPath), definitions.CentroDeCusto);
@@ -54,6 +57,13 @@ async Task MarkTimesheet()
             VerifyTimesheet(horario);
         }
     }
+}
+
+bool IsDayAlreadyChecked()
+{
+    _driverService.WaitUntilElementExists(By.XPath(definitions.Locators.GravarDadosXPath));
+
+    return _driverService.GetElementContent(By.XPath(definitions.Locators.RegistroTabelaXPath)).Equals("0.00") ? false : true;
 }
 
 void VerifyTimesheet(Horario horario)
