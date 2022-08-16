@@ -1,6 +1,6 @@
 ﻿{
-  "Usuario": "igor.henriques",
-  "Senha": "Ig0rH3nr1qu3s",
+  "Usuario": "",
+  "Senha": "",
   "MainURL": "https://timesheet.onlineapp.com.br/timesheet.php?ano={0}&mes={1}&dia={2}",
   "Centro de Custo": "2.03.005.00002 - Transf. Digital - Fab. Softwares - SmartKargo - Ground Handl",
   "Atividade": "Treinamento - SK",
