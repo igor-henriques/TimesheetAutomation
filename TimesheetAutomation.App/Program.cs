@@ -15,7 +15,7 @@ try
 catch (Exception ex)
 {
     LogWriter.Write(ex.ToString());
-
+    _driverService.Dispose();
     throw;
 }
 
@@ -32,7 +32,7 @@ async Task LoginAsync()
 
 async Task MarkTimesheet()
 {
-    for (int day = 1; day < DateTime.UtcNow.Day; day++)
+    for (int day = 1; day <= DateTime.Today.Day; day++)
     {
         if (!await IsWorkDay(day))
             continue;
