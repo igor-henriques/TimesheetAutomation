@@ -1,5 +1,8 @@
 ﻿DriverUtils.CleanDriverGarbage();
 
+if (!IsVpnConnected())
+    throw new Exception("Desconectado da VPN.");
+
 var definitions = await Definitions.GetInstanceAsync();
 
 IDriverService _driverService = new DriverService();
@@ -10,12 +13,12 @@ try
     await LoginAsync();
     await MarkTimesheet();
 
-    _driverService.Dispose();
+    _driverService?.Dispose();
 }
 catch (Exception ex)
 {
     LogWriter.Write(ex.ToString());
-    _driverService.Dispose();
+    _driverService?.Dispose();
     throw;
 }
 
@@ -32,7 +35,7 @@ async Task LoginAsync()
 
 async Task MarkTimesheet()
 {
-    for (int day = 1; day <= DateTime.Today.Day; day++)
+    for (int day = 1; day <= DateTime.Now.Day; day++)
     {
         if (!await IsWorkDay(day))
             continue;
@@ -83,7 +86,7 @@ async ValueTask<bool> IsWorkDay(int day)
 {
     var currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, day);
 
-    bool isWeekend = currentDate.DayOfWeek == DayOfWeek.Sunday | currentDate.DayOfWeek == DayOfWeek.Saturday;
+    bool isWeekend = currentDate is { DayOfWeek: DayOfWeek.Sunday } or { DayOfWeek: DayOfWeek.Saturday };
 
     if (isWeekend)
         return false;
@@ -105,4 +108,22 @@ async ValueTask<bool> IsWorkDay(int day)
     }
 
     return true;
+}
+
+bool IsVpnConnected()
+{
+    if (NetworkInterface.GetIsNetworkAvailable())
+    {
+        NetworkInterface[] interfaces = NetworkInterface.GetAllNetworkInterfaces();
+
+        foreach (NetworkInterface Interface in interfaces)
+        {
+            if (Interface.OperationalStatus == OperationalStatus.Up)
+            {
+                return (Interface.NetworkInterfaceType == NetworkInterfaceType.Ppp) && (Interface.NetworkInterfaceType != NetworkInterfaceType.Loopback);
+            }
+        }
+    }
+
+    return false;
 }

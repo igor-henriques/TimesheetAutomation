@@ -8,3 +8,4 @@ global using OpenQA.Selenium;
 global using OpenQA.Selenium.Support.UI;
 global using SeleniumExtras.WaitHelpers;
 global using DriverService = TimesheetAutomation.App.Services.DriverService;
+global using System.Net.NetworkInformation;

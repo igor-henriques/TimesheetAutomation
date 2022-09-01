@@ -15,7 +15,7 @@ internal class WorkdayService : IWorkdayService
         if (_holidays is not null)
             return _holidays;
 
-        var response = await _client.GetAsync("https://brasilapi.com.br/api/feriados/v1/2022");
+        var response = await _client.GetAsync($"https://brasilapi.com.br/api/feriados/v1/{DateTime.Now.Year}");
 
         if (!response.IsSuccessStatusCode)
             throw new Exception("Erro ao obter lista de feriados");
