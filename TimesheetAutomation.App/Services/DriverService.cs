@@ -45,8 +45,17 @@ internal class DriverService : IDriverService, IDisposable
     public void InsertTextOnElement(By elementLocator, string text, bool verifyExistence = true)
     {
         var element = GetElement(elementLocator, verifyExistence);
-
         element.SendKeys(text);
+    }
+
+    public void SelectComboboxIndex(By elementLocator, int comboIndex, bool verifyExistente = true)
+    {
+        var element = GetElement(elementLocator, verifyExistente);
+
+        for (int i = 0; i < comboIndex; i++)
+        {
+            element.SendKeys(OpenQA.Selenium.Keys.ArrowDown);
+        }
     }
 
     public void WaitUntilElementExists(By elementLocator)

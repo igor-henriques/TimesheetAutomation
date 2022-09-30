@@ -6,6 +6,7 @@ internal interface IDriverService : IDisposable
     IWebElement GetElement(By elementLocator, bool verifyExistence = true);
     string GetElementContent(By elementLocator, bool verifyExistence = true);
     void InsertTextOnElement(By elementLocator, string text, bool verifyExistence = true);
+    void SelectComboboxIndex(By elementLocator, int comboIndex, bool verifyExistente = true);
     void Navigate(string URL);
     void WaitUntilElementExists(By elementLocator);
 }

@@ -51,10 +51,10 @@ async Task MarkTimesheet()
         {
             _driverService.InsertTextOnElement(By.XPath(definitions.Locators.CentroDeCustoXPath), definitions.CentroDeCusto);
             _driverService.InsertTextOnElement(By.XPath(definitions.Locators.AtividadeXPath), definitions.Atividade);
-            _driverService.InsertTextOnElement(By.XPath(definitions.Locators.InicioHoraXPath), horario.HoraInicio.ToString("00"));
-            _driverService.InsertTextOnElement(By.XPath(definitions.Locators.InicioMinutoXPath), horario.MinutoInicio.ToString("00"));
-            _driverService.InsertTextOnElement(By.XPath(definitions.Locators.FinalHoraXPath), horario.HoraFinal.ToString("00"));
-            _driverService.InsertTextOnElement(By.XPath(definitions.Locators.FinalMinutoXPath), horario.MinutoFinal.ToString("00"));
+            _driverService.SelectComboboxIndex(By.XPath(definitions.Locators.InicioHoraXPath), horario.HoraInicio);
+            _driverService.SelectComboboxIndex(By.XPath(definitions.Locators.InicioMinutoXPath), horario.MinutoInicio);
+            _driverService.SelectComboboxIndex(By.XPath(definitions.Locators.FinalHoraXPath), horario.HoraFinal);
+            _driverService.SelectComboboxIndex(By.XPath(definitions.Locators.FinalMinutoXPath), horario.MinutoFinal);
             await _driverService.ClickOnElement(By.XPath(definitions.Locators.GravarDadosXPath));
 
             VerifyTimesheet(horario);
