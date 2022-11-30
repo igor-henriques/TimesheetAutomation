@@ -8,10 +8,11 @@ internal class DriverService : IDriverService, IDisposable
     public DriverService()
     {
         this._driver = new ChromeDriver(DriverUtils.GetChromeDriverService(), DriverUtils.GetChromeOptions());
-        this._wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+        this._wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
         this._wait.IgnoreExceptionTypes(typeof(NoSuchElementException), typeof(ElementNotVisibleException));
     }
 
+    public string GetCurrentURL() => _driver.Url;
     public void Navigate(string URL)
     {
         _driver.Navigate().GoToUrl(URL);

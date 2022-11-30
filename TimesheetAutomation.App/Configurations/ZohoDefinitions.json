@@ -1,0 +1,24 @@
+﻿{
+  "Usuario": "igor.henriques",
+  "Senha": "aibmettH11!!",
+  "MainURL": "https://timesheet.onlineapp.com.br/timesheet.php?ano={0}&mes={1}&dia={2}",
+  "Centro de Custo": "2.03.005.00002 - Transf. Digital - Fab. Softwares - SmartKargo - Ground Handl",
+  "Atividade": "Treinamento - SK",
+  "Horários": [
+    {
+      "HoraInicio": 8,
+      "MinutoInicio": 30,
+      "HoraFinal": 12,
+      "MinutoFinal": 30
+    },
+    {
+      "HoraInicio": 13,
+      "MinutoInicio": 30,
+      "HoraFinal": 17,
+      "MinutoFinal": 55
+    }
+  ],
+  "Safelist": [
+    "12/11/2022~14/11/2022"
+  ]
+}

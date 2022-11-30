@@ -9,4 +9,5 @@ internal interface IDriverService : IDisposable
     void SelectComboboxIndex(By elementLocator, int comboIndex, bool verifyExistente = true);
     void Navigate(string URL);
     void WaitUntilElementExists(By elementLocator);
+    string GetCurrentURL();
 }

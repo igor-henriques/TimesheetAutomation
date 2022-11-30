@@ -8,6 +8,7 @@ internal class DriverUtils
     {
         ChromeDriverService driverService = ChromeDriverService.CreateDefaultService();
 
+        driverService.LogPath = Path.Combine(Directory.GetCurrentDirectory(), "seleniumlog.txt");
         driverService.HideCommandPromptWindow = true;
 
         return driverService;

@@ -1,6 +1,6 @@
 ﻿namespace TimesheetAutomation.App.Configurations;
 
-internal record Definitions
+internal record OnlineDefinitions
 {
     [JsonProperty("Usuario")]
     public string Usuario { get; init; }
@@ -21,11 +21,11 @@ internal record Definitions
     [JsonProperty("Safelist")]
     private IEnumerable<string> SafelistDates { get; init; } = Enumerable.Empty<string>();
     public List<DateOnly> SafelistHolidayDates { get; private set; } = new List<DateOnly>();
-    private Definitions() { }
+    private OnlineDefinitions() { }
 
-    public static async Task<Definitions> GetInstanceAsync()
+    public static async Task<OnlineDefinitions> GetInstanceAsync()
     {
-        var definitions = JsonConvert.DeserializeObject<Definitions>(await File.ReadAllTextAsync("./Configurations/Definitions.json"));
+        var definitions = JsonConvert.DeserializeObject<OnlineDefinitions>(await File.ReadAllTextAsync("./Configurations/Definitions.json"));
 
         if (string.IsNullOrEmpty(definitions.Usuario) | string.IsNullOrEmpty(definitions.Senha))
         {
